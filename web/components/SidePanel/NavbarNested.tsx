@@ -19,6 +19,7 @@ import {
   IconNotes,
   IconPresentationAnalytics,
   IconSun,
+  IconBrandFacebook
 } from "@tabler/icons-react";
 import { Logo } from "./Logo";
 import { LinksGroup } from "./NavbarLinksGroup/NavbarLinksGroup";
@@ -26,8 +27,9 @@ import classes from "./NavbarNested.module.css";
 import { UserButton } from "./UserButton/UserButton";
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge, href: "/dashboard" },
+  { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
   { label: "Youtube", icon: IconBrandYoutube, href: "/youtube" },
+  { label: "Facebook", icon: IconBrandFacebook, href: "/facebook" },
   {
     label: "Market news",
     icon: IconNotes,
