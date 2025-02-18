@@ -8,7 +8,13 @@ const port = process.env.PORT || 8000;
 const middleware = [
   express.json(),
   express.urlencoded({ extended: true }),
-  cors(),
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Authorization"],
+  }),
 ];
 app.use(middleware);
 
