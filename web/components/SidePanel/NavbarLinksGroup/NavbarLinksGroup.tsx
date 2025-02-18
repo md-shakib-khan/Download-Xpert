@@ -1,21 +1,37 @@
-'use client'
-import { useState } from 'react';
-import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
-import { Box, Collapse, Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
-import classes from './NavbarLinksGroup.module.css';
+"use client";
+import {
+  Box,
+  Collapse,
+  Group,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
+} from "@mantine/core";
+import { IconCalendarStats, IconChevronRight } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import classes from "./NavbarLinksGroup.module.css";
 
 interface LinksGroupProps {
-  icon: React.FC<any>;
   label: string;
+  icon: React.FC<any>;
+  href?: string;
   initiallyOpened?: boolean;
   links?: { label: string; link: string }[];
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
+export function LinksGroup({
+  icon: Icon,
+  label,
+  initiallyOpened,
+  links,
+  href,
+}: LinksGroupProps) {
+  const router = useRouter();
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
-    <Text<'a'>
+    <Text<"a">
       component="a"
       className={classes.link}
       href={link.link}
@@ -28,9 +44,17 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
 
   return (
     <>
-      <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+      <UnstyledButton
+        onClick={() => {
+          setOpened((o) => !o);
+          if(href){
+            router.push(href);
+          }
+        }}
+        className={classes.control}
+      >
         <Group justify="space-between" gap={0}>
-          <Box style={{ display: 'flex', alignItems: 'center' }}>
+          <Box style={{ display: "flex", alignItems: "center" }}>
             <ThemeIcon variant="light" size={30}>
               <Icon size={18} />
             </ThemeIcon>
@@ -41,7 +65,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
               className={classes.chevron}
               stroke={1.5}
               size={16}
-              style={{ transform: opened ? 'rotate(-90deg)' : 'none' }}
+              style={{ transform: opened ? "rotate(-90deg)" : "none" }}
             />
           )}
         </Group>
@@ -52,12 +76,13 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
 }
 
 const mockdata = {
-  label: 'Releases',
+  label: "Releases",
   icon: IconCalendarStats,
+  href: "/releases",
   links: [
-    { label: 'Upcoming releases', link: '/' },
-    { label: 'Previous releases', link: '/' },
-    { label: 'Releases schedule', link: '/' },
+    { label: "Upcoming releases", link: "/" },
+    { label: "Previous releases", link: "/" },
+    { label: "Releases schedule", link: "/" },
   ],
 };
 

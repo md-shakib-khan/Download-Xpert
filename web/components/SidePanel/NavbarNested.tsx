@@ -10,6 +10,7 @@ import cx from "clsx";
 
 import {
   IconAdjustments,
+  IconBrandYoutube,
   IconCalendarStats,
   IconFileAnalytics,
   IconGauge,
@@ -25,7 +26,8 @@ import classes from "./NavbarNested.module.css";
 import { UserButton } from "./UserButton/UserButton";
 
 const mockdata = [
-  { label: "Dashboard", icon: IconGauge },
+  { label: "Dashboard", icon: IconGauge, href: "/dashboard" },
+  { label: "Youtube", icon: IconBrandYoutube, href: "/youtube" },
   {
     label: "Market news",
     icon: IconNotes,
@@ -46,9 +48,9 @@ const mockdata = [
       { label: "Releases schedule", link: "/" },
     ],
   },
-  { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Contracts", icon: IconFileAnalytics },
-  { label: "Settings", icon: IconAdjustments },
+  { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
+  { label: "Contracts", icon: IconFileAnalytics, href: "/contracts" },
+  { label: "Settings", icon: IconAdjustments, href: "/settings" },
   {
     label: "Security",
     icon: IconLock,
