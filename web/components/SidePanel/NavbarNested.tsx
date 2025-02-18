@@ -1,10 +1,13 @@
 "use client";
 import {
-  Button,
+  ActionIcon,
   Group,
   ScrollArea,
+  useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
+import cx from "clsx";
+
 import {
   IconAdjustments,
   IconCalendarStats,
@@ -58,13 +61,13 @@ const mockdata = [
 ];
 
 export function NavbarNested() {
-  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light", {
+    getInitialValueInEffect: true,
+  });
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
-  function capitalizeFirstLetter(str: String) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
   return (
     <nav className={classes.navbar}>
@@ -72,27 +75,17 @@ export function NavbarNested() {
         <Group justify="space-between">
           <Logo style={{ width: 120 }} />
           {/* <Code fw={700}>v3.1.2</Code> */}
-          <Button
-            leftSection={
-              colorScheme === "light" ? (
-                <IconMoon size={14} />
-              ) : (
-                <IconSun size={14} />
-              )
+          <ActionIcon
+            onClick={() =>
+              setColorScheme(computedColorScheme === "light" ? "dark" : "light")
             }
             variant="default"
-            onClick={() =>
-              setColorScheme(
-                colorScheme === "light"
-                  ? "dark"
-                  : colorScheme === "dark"
-                  ? "auto"
-                  : "light"
-              )
-            }
+            size="xl"
+            aria-label="Toggle color scheme"
           >
-            {capitalizeFirstLetter(colorScheme)}
-          </Button>
+            <IconSun className={cx(classes.icon, classes.light)} stroke={1.5} />
+            <IconMoon className={cx(classes.icon, classes.dark)} stroke={1.5} />
+          </ActionIcon>
         </Group>
       </div>
 

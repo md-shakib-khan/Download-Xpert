@@ -21,17 +21,21 @@
     "@mantine/nprogress": "^7.17.0",
     "@mantine/spotlight": "^7.17.0",
     "@mantine/tiptap": "^7.17.0",
+    "@mantinex/mantine-logo": "^1.1.0",
     "@tabler/icons-react": "^3.30.0",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/pm": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "motion": "^12.4.3",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
