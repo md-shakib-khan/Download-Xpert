@@ -19,3 +19,27 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 } */
+
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px; /* Set width to 5px */
+}
+
+/* Track (Background) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Light gray */
+  border-radius: 10px;
+}
+
+/* Thumb (Draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #888; /* Gray color */
+  border-radius: 10px;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker gray on hover */
+}
