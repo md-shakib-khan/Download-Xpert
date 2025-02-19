@@ -1,6 +1,7 @@
 "use client";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import { SessionProvider } from "next-auth/react";
 import React from "react";
 
 interface GlobalProviderProps {
@@ -27,8 +28,10 @@ export const GlobalContextProvider: React.FC<GlobalProviderProps> = ({
     console.log("Context API Working ?");
   }, []);
   return (
-    <GlobalContext.Provider value={{ sayHello }}>
-      <MantineProvider>{children}</MantineProvider>
-    </GlobalContext.Provider>
+    <SessionProvider>
+      <GlobalContext.Provider value={{ sayHello }}>
+        <MantineProvider>{children}</MantineProvider>
+      </GlobalContext.Provider>
+    </SessionProvider>
   );
 };
