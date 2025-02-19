@@ -21,16 +21,14 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconBook,
-  IconChartPie3,
   IconChevronDown,
   IconCode,
   IconCoin,
   IconFingerprint,
-  IconNotification,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import classes from "./HeaderMegaMenu.module.css";
 import { useRouter } from "next/navigation";
+import classes from "./HeaderMegaMenu.module.css";
 
 const mockdata = [
   {
@@ -70,14 +68,18 @@ const mockdata = [
 ];
 
 export function HeaderMegaMenu() {
-  const router = useRouter()
+  const router = useRouter();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title} onClick={()=> router.push(item.href)}>
+    <UnstyledButton
+      className={classes.subLink}
+      key={item.title}
+      onClick={() => router.push(item.href)}
+    >
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
