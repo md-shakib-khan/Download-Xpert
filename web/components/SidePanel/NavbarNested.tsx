@@ -9,17 +9,12 @@ import {
 import cx from "clsx";
 
 import {
-  IconAdjustments,
+  IconBrandFacebook,
+  IconBrandInstagram,
   IconBrandYoutube,
-  IconCalendarStats,
-  IconFileAnalytics,
-  IconGauge,
-  IconLock,
   IconMoon,
-  IconNotes,
   IconPresentationAnalytics,
-  IconSun,
-  IconBrandFacebook
+  IconSun
 } from "@tabler/icons-react";
 import { Logo } from "./Logo";
 import { LinksGroup } from "./NavbarLinksGroup/NavbarLinksGroup";
@@ -30,38 +25,40 @@ const mockdata = [
   { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
   { label: "Youtube", icon: IconBrandYoutube, href: "/youtube" },
   { label: "Facebook", icon: IconBrandFacebook, href: "/facebook" },
-  {
-    label: "Market news",
-    icon: IconNotes,
-    initiallyOpened: true,
-    links: [
-      { label: "Overview", link: "/" },
-      { label: "Forecasts", link: "/" },
-      { label: "Outlook", link: "/" },
-      { label: "Real time", link: "/" },
-    ],
-  },
-  {
-    label: "Releases",
-    icon: IconCalendarStats,
-    links: [
-      { label: "Upcoming releases", link: "/" },
-      { label: "Previous releases", link: "/" },
-      { label: "Releases schedule", link: "/" },
-    ],
-  },
-  { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
-  { label: "Contracts", icon: IconFileAnalytics, href: "/contracts" },
-  { label: "Settings", icon: IconAdjustments, href: "/settings" },
-  {
-    label: "Security",
-    icon: IconLock,
-    links: [
-      { label: "Enable 2FA", link: "/" },
-      { label: "Change password", link: "/" },
-      { label: "Recovery codes", link: "/" },
-    ],
-  },
+  { label: "Instagram", icon: IconBrandInstagram, href: "/instagram" },
+  { label: "Tiktok", icon: IconBrandInstagram, href: "/tiktok" },
+  // {
+  //   label: "Market news",
+  //   icon: IconNotes,
+  //   initiallyOpened: true,
+  //   links: [
+  //     { label: "Overview", link: "/" },
+  //     { label: "Forecasts", link: "/" },
+  //     { label: "Outlook", link: "/" },
+  //     { label: "Real time", link: "/" },
+  //   ],
+  // },
+  // {
+  //   label: "Releases",
+  //   icon: IconCalendarStats,
+  //   links: [
+  //     { label: "Upcoming releases", link: "/" },
+  //     { label: "Previous releases", link: "/" },
+  //     { label: "Releases schedule", link: "/" },
+  //   ],
+  // },
+  // { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
+  // { label: "Contracts", icon: IconFileAnalytics, href: "/contracts" },
+  // { label: "Settings", icon: IconAdjustments, href: "/settings" },
+  // {
+  //   label: "Security",
+  //   icon: IconLock,
+  //   links: [
+  //     { label: "Enable 2FA", link: "/" },
+  //     { label: "Change password", link: "/" },
+  //     { label: "Recovery codes", link: "/" },
+  //   ],
+  // },
 ];
 
 export function NavbarNested() {
