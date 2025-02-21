@@ -1,5 +1,4 @@
 import { GlobalContextProvider } from "@/context/GlobalContextProvider";
-
 import "./globals.css";
 
 export default function RootLayout({
