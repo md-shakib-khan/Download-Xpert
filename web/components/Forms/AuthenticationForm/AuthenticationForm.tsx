@@ -22,7 +22,8 @@ import { GoogleButton } from "./GoogleButton";
 import { InstagramButton } from "./InstagramButton";
 import { TiktokButton } from "./TiktokButton";
 import { XButton } from "./XButton";
-//   import { TwitterButton } from './TwitterButton';
+
+import axios from "axios";
 
 export function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
@@ -42,6 +43,58 @@ export function AuthenticationForm(props: PaperProps) {
           : null,
     },
   });
+
+  const handleSubmit = async (values: any) => {
+    try {
+      if (type === "register") {
+        // Register User
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_WEB_SERVER_URL}/user/auth/manual/register`,
+          {
+            name: values.name,
+            email: values.email,
+            password: values.password,
+          }
+        );
+        // Handle registration response (e.g., redirect, show message)
+        console.log("Registered successfully", response.data);
+        // Check if the response contains a token
+        if (response.data && response.data.token) {
+          // Save token in localStorage
+          localStorage.setItem(
+            "download_xpert_user_token",
+            response.data.token
+          );
+          console.log("Token saved in localStorage:", response.data.token);
+        }
+      } else {
+        // Login User
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_WEB_SERVER_URL}/user/auth/manual/login`,
+          {
+            email: values.email,
+            password: values.password,
+          }
+        );
+        // Handle login response (e.g., store token, redirect, show message)
+        console.log("Logged in successfully", response.data);
+        // Check if the response contains a token
+        if (response.data && response.data.token) {
+          // Save token in localStorage
+          localStorage.setItem(
+            "download_xpert_user_token",
+            response.data.token
+          );
+          console.log("Token saved in localStorage:", response.data.token);
+        }
+      }
+    } catch (error) {
+      console.error("Error during form submission", error);
+    }
+
+    // Reset the form after submission
+    form.reset();
+  };
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
@@ -70,16 +123,11 @@ export function AuthenticationForm(props: PaperProps) {
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
-      <form
-        onSubmit={form.onSubmit(() => {
-          console.log("Form submitted", form.values);
-          // TODO: Send form data to the server
-          form.reset();
-        })}
-      >
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           {type === "register" && (
             <TextInput
+              required
               label="Name"
               placeholder="Your name"
               value={form.values.name}
