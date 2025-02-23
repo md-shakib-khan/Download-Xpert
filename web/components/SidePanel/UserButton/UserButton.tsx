@@ -1,36 +1,11 @@
 "use client";
+import { useGlobalContext } from "@/context/GlobalContextProvider";
 import { Avatar, Group, Text, UnstyledButton } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import classes from "./UserButton.module.css";
 
-export function UserButton({ token }: any) {
-  const [userProfile, setUserProfile] = useState({
-    name: "",
-    email: "",
-    image: "",
-  });
-  const getProfileInfo = async () => {
-    const { data } = await axios.get(
-      `${
-        process.env.NODE_ENV === "development"
-          ? process.env.NEXT_PUBLIC_WEB_SERVER_URL_DEV
-          : process.env.NEXT_PUBLIC_WEB_SERVER_URL_PRO
-      }/user/profile-info`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    setUserProfile(data.data);
-  };
-
-  useEffect(() => {
-    getProfileInfo();
-  }, []);
+export function UserButton() {
+  const { userProfile, token } = useGlobalContext();
 
   return (
     <UnstyledButton className={classes.user}>

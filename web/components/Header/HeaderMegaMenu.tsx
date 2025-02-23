@@ -1,15 +1,16 @@
 "use client";
+import { useGlobalContext } from "@/context/GlobalContextProvider";
 import {
-  Anchor,
+  Avatar,
   Box,
   Burger,
-  Button,
   Center,
   Collapse,
   Divider,
   Drawer,
   Group,
   HoverCard,
+  Menu,
   ScrollArea,
   SimpleGrid,
   Text,
@@ -25,9 +26,19 @@ import {
   IconCode,
   IconCoin,
   IconFingerprint,
+  IconHeart,
+  IconLogout,
+  IconMessage,
+  IconPlayerPause,
+  IconSettings,
+  IconStar,
+  IconSwitchHorizontal,
+  IconTrash,
 } from "@tabler/icons-react";
+import cx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import classes from "./HeaderMegaMenu.module.css";
 
 const mockdata = [
@@ -68,11 +79,13 @@ const mockdata = [
 ];
 
 export function HeaderMegaMenu() {
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
   const router = useRouter();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const { userProfile } = useGlobalContext();
 
   const links = mockdata.map((item) => (
     <UnstyledButton
@@ -109,7 +122,7 @@ export function HeaderMegaMenu() {
 
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="#" className={classes.link}>
-              Home
+              Analytics
             </a>
             <HoverCard
               width={600}
@@ -119,7 +132,7 @@ export function HeaderMegaMenu() {
               withinPortal
             >
               <HoverCard.Target>
-                <a href="#" className={classes.link}>
+                <a className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Media
@@ -130,20 +143,20 @@ export function HeaderMegaMenu() {
               </HoverCard.Target>
 
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <Group justify="space-between" px="md">
+                {/* <Group justify="space-between" px="md">
                   <Text fw={500}>Features</Text>
                   <Anchor href="#" fz="xs">
                     View all
                   </Anchor>
-                </Group>
+                </Group> */}
 
-                <Divider my="sm" />
+                {/* <Divider my="sm" /> */}
 
                 <SimpleGrid cols={2} spacing={0}>
                   {links}
                 </SimpleGrid>
 
-                <div className={classes.dropdownFooter}>
+                {/* <div className={classes.dropdownFooter}>
                   <Group justify="space-between">
                     <div>
                       <Text fw={500} fz="sm">
@@ -155,7 +168,7 @@ export function HeaderMegaMenu() {
                     </div>
                     <Button variant="default">Get started</Button>
                   </Group>
-                </div>
+                </div> */}
               </HoverCard.Dropdown>
             </HoverCard>
             <a href="#" className={classes.link}>
@@ -166,12 +179,104 @@ export function HeaderMegaMenu() {
             </a>
           </Group>
 
-          <Group visibleFrom="sm">
+          {/* <Group visibleFrom="sm">
             <Link href="/authentication">
               <Button variant="default">Authentication</Button>
             </Link>
-            {/* <Button>Sign up</Button> */}
-          </Group>
+          </Group> */}
+
+          <Menu
+            width={260}
+            position="bottom-end"
+            transitionProps={{ transition: "pop-top-right" }}
+            onClose={() => setUserMenuOpened(false)}
+            onOpen={() => setUserMenuOpened(true)}
+            withinPortal
+          >
+            <Menu.Target>
+              <UnstyledButton
+                className={cx(classes.user, {
+                  [classes.userActive]: userMenuOpened,
+                })}
+              >
+                <Group gap={7}>
+                  <Avatar
+                    src={userProfile.image}
+                    alt={userProfile.name}
+                    radius="xl"
+                    size={20}
+                  />
+                  <Text fw={500} size="sm" lh={1} mr={3}>
+                    {userProfile.name}
+                  </Text>
+                  <IconChevronDown size={12} stroke={1.5} />
+                </Group>
+              </UnstyledButton>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={
+                  <IconHeart
+                    size={16}
+                    color={theme.colors.red[6]}
+                    stroke={1.5}
+                  />
+                }
+              >
+                Liked posts
+              </Menu.Item>
+              <Menu.Item
+                leftSection={
+                  <IconStar
+                    size={16}
+                    color={theme.colors.yellow[6]}
+                    stroke={1.5}
+                  />
+                }
+              >
+                Saved posts
+              </Menu.Item>
+              <Menu.Item
+                leftSection={
+                  <IconMessage
+                    size={16}
+                    color={theme.colors.blue[6]}
+                    stroke={1.5}
+                  />
+                }
+              >
+                Your comments
+              </Menu.Item>
+
+              <Menu.Label>Settings</Menu.Label>
+              <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
+                Account settings
+              </Menu.Item>
+              <Menu.Item
+                leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}
+              >
+                Change account
+              </Menu.Item>
+              <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>
+                Logout
+              </Menu.Item>
+
+              <Menu.Divider />
+
+              <Menu.Label>Danger zone</Menu.Label>
+              <Menu.Item
+                leftSection={<IconPlayerPause size={16} stroke={1.5} />}
+              >
+                Pause subscription
+              </Menu.Item>
+              <Menu.Item
+                color="red"
+                leftSection={<IconTrash size={16} stroke={1.5} />}
+              >
+                Delete account
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
 
           <Burger
             opened={drawerOpened}
@@ -193,13 +298,13 @@ export function HeaderMegaMenu() {
         <ScrollArea h="calc(100vh - 80px" mx="-md">
           <Divider my="sm" />
 
-          <a href="#" className={classes.link}>
-            Home
+          <a href="/analytics" className={classes.link}>
+            Analytics
           </a>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>
-                Features
+                Media
               </Box>
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
@@ -212,12 +317,12 @@ export function HeaderMegaMenu() {
             Academy
           </a>
 
-          <Divider my="sm" />
+          {/* <Divider my="sm" /> */}
 
-          <Group justify="center" grow pb="xl" px="md">
+          {/* <Group justify="center" grow pb="xl" px="md">
             <Button variant="default">Log in</Button>
             <Button>Sign up</Button>
-          </Group>
+          </Group> */}
         </ScrollArea>
       </Drawer>
     </Box>

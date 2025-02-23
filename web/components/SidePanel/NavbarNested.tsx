@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import cx from "clsx";
 
-import { useGlobalContext } from "@/context/GlobalContextProvider";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -18,9 +17,7 @@ import {
   IconPresentationAnalytics,
   IconSun,
 } from "@tabler/icons-react";
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { LinksGroup } from "./NavbarLinksGroup/NavbarLinksGroup";
 import classes from "./NavbarNested.module.css";
 import { UserButton } from "./UserButton/UserButton";
@@ -66,7 +63,6 @@ const mockdata = [
 ];
 
 export function NavbarNested() {
-    const { token } = useGlobalContext();
   const { setColorScheme } = useMantineColorScheme();
 
   const computedColorScheme = useComputedColorScheme("light", {
@@ -75,7 +71,6 @@ export function NavbarNested() {
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
-
 
   return (
     <nav className={classes.navbar}>
@@ -108,7 +103,7 @@ export function NavbarNested() {
       </ScrollArea>
 
       <div className={classes.footer}>
-        <UserButton token={token} />
+        <UserButton />
       </div>
     </nav>
   );
