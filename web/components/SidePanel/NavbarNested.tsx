@@ -1,8 +1,6 @@
 "use client";
 import {
   ActionIcon,
-  Button,
-  Flex,
   Group,
   ScrollArea,
   Title,
@@ -11,18 +9,21 @@ import {
 } from "@mantine/core";
 import cx from "clsx";
 
+import { useGlobalContext } from "@/context/GlobalContextProvider";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
   IconBrandYoutube,
-  IconLogin2,
   IconMoon,
   IconPresentationAnalytics,
   IconSun,
 } from "@tabler/icons-react";
+import axios from "axios";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { LinksGroup } from "./NavbarLinksGroup/NavbarLinksGroup";
 import classes from "./NavbarNested.module.css";
+import { UserButton } from "./UserButton/UserButton";
 
 const mockdata = [
   { label: "Analytics", icon: IconPresentationAnalytics, href: "/analytics" },
@@ -65,13 +66,16 @@ const mockdata = [
 ];
 
 export function NavbarNested() {
+    const { token } = useGlobalContext();
   const { setColorScheme } = useMantineColorScheme();
+
   const computedColorScheme = useComputedColorScheme("light", {
     getInitialValueInEffect: true,
   });
   const links = mockdata.map((item) => (
     <LinksGroup {...item} key={item.label} />
   ));
+
 
   return (
     <nav className={classes.navbar}>
@@ -104,25 +108,7 @@ export function NavbarNested() {
       </ScrollArea>
 
       <div className={classes.footer}>
-        {/* <UserButton /> */}
-        <Flex
-      mih={50}
-      bg="rgba(0, 0, 0, .3)"
-      gap="md"
-      justify="center"
-      align="center"
-      direction="row"
-      wrap="wrap"
-    >
-          <Link href={"/authentication"}>
-          <Button leftSection={<IconLogin2 size={14} />} variant="default">
-            Authentication
-          </Button></Link>
-         {/* <Link href={"/sign-up"}>
-         <Button leftSection={<IconLogin2 size={14} />} variant="default">
-            Sign Up
-          </Button></Link> */}
-        </Flex>
+        <UserButton token={token} />
       </div>
     </nav>
   );

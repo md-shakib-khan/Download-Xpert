@@ -1,23 +1,49 @@
-import { IconChevronRight } from '@tabler/icons-react';
-import { Avatar, Group, Text, UnstyledButton } from '@mantine/core';
-import classes from './UserButton.module.css';
+"use client";
+import { Avatar, Group, Text, UnstyledButton } from "@mantine/core";
+import { IconChevronRight } from "@tabler/icons-react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import classes from "./UserButton.module.css";
 
-export function UserButton() {
+export function UserButton({ token }: any) {
+  const [userProfile, setUserProfile] = useState({
+    name: "",
+    email: "",
+    image: "",
+  });
+  const getProfileInfo = async () => {
+    const { data } = await axios.get(
+      `${
+        process.env.NODE_ENV === "development"
+          ? process.env.NEXT_PUBLIC_WEB_SERVER_URL_DEV
+          : process.env.NEXT_PUBLIC_WEB_SERVER_URL_PRO
+      }/user/profile-info`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setUserProfile(data.data);
+  };
+
+  useEffect(() => {
+    getProfileInfo();
+  }, []);
+
   return (
     <UnstyledButton className={classes.user}>
       <Group>
-        <Avatar
-          src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
-          radius="xl"
-        />
+        <Avatar src={userProfile.image} radius="xl" />
 
         <div style={{ flex: 1 }}>
           <Text size="sm" fw={500}>
-            Harriette Spoonlicker
+            {userProfile.name}
           </Text>
 
           <Text c="dimmed" size="xs">
-            hspoonlicker@outlook.com
+            {userProfile.email}
           </Text>
         </div>
 

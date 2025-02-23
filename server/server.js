@@ -11,7 +11,10 @@ const middleware = [
   express.json(),
   express.urlencoded({ extended: true }),
   cors({
-    origin: "*",
+    origin:
+      process.env.NODE_ENV === "development"
+        ? process.env.WEB_CLIENT_URL_DEV
+        : process.env.WEB_CLIENT_URL_PRO,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],

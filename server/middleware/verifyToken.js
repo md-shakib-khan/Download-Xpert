@@ -14,6 +14,8 @@ function verifyToken(req, res, next) {
 
   // Verify the token using the secret key
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    console.log(token);
+    
     if (err) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }

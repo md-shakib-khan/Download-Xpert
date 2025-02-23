@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
-import { signIn } from "next-auth/react";
+import Cookies from "js-cookie";
 import { FacebookButton } from "./FacebookButton";
 import { GitHubButton } from "./GitHubButton";
 import { GoogleButton } from "./GoogleButton";
@@ -24,8 +24,10 @@ import { TiktokButton } from "./TiktokButton";
 import { XButton } from "./XButton";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export function AuthenticationForm(props: PaperProps) {
+  const router = useRouter();
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
     initialValues: {
@@ -49,7 +51,11 @@ export function AuthenticationForm(props: PaperProps) {
       if (type === "register") {
         // Register User
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_WEB_SERVER_URL}/user/auth/manual/register`,
+          `${
+            process.env.NODE_ENV === "development"
+              ? process.env.NEXT_PUBLIC_WEB_SERVER_URL_DEV
+              : process.env.NEXT_PUBLIC_WEB_SERVER_URL_PRO
+          }/user/auth/manual/register`,
           {
             name: values.name,
             email: values.email,
@@ -58,19 +64,18 @@ export function AuthenticationForm(props: PaperProps) {
         );
         // Handle registration response (e.g., redirect, show message)
         console.log("Registered successfully", response.data);
-        // Check if the response contains a token
-        if (response.data && response.data.token) {
-          // Save token in localStorage
-          localStorage.setItem(
-            "download_xpert_user_token",
-            response.data.token
-          );
-          console.log("Token saved in localStorage:", response.data.token);
+        if (response.data.success) {
+          Cookies.set("user_2225", response.data.token);
+          window.location.href = "/";
         }
       } else {
         // Login User
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_WEB_SERVER_URL}/user/auth/manual/login`,
+          `${
+            process.env.NODE_ENV === "development"
+              ? process.env.NEXT_PUBLIC_WEB_SERVER_URL_DEV
+              : process.env.NEXT_PUBLIC_WEB_SERVER_URL_PRO
+          }/user/auth/manual/login`,
           {
             email: values.email,
             password: values.password,
@@ -78,14 +83,10 @@ export function AuthenticationForm(props: PaperProps) {
         );
         // Handle login response (e.g., store token, redirect, show message)
         console.log("Logged in successfully", response.data);
-        // Check if the response contains a token
-        if (response.data && response.data.token) {
-          // Save token in localStorage
-          localStorage.setItem(
-            "download_xpert_user_token",
-            response.data.token
-          );
-          console.log("Token saved in localStorage:", response.data.token);
+
+        if (response.data.success) {
+          Cookies.set("user_2225", response.data.token);
+          window.location.href = "/";
         }
       }
     } catch (error) {
@@ -103,16 +104,10 @@ export function AuthenticationForm(props: PaperProps) {
       </Text>
 
       <SimpleGrid cols={2} mb="md" mt="md">
-        <GoogleButton
-          radius="xl"
-          onClick={() => signIn("google", { redirectTo: "/" })}
-        >
+        <GoogleButton radius="xl" onClick={() => {}}>
           Google
         </GoogleButton>
-        <GitHubButton
-          radius="xl"
-          onClick={() => signIn("github", { redirectTo: "/" })}
-        >
+        <GitHubButton radius="xl" onClick={() => {}}>
           Github
         </GitHubButton>
         <InstagramButton radius="xl">Instagram</InstagramButton>

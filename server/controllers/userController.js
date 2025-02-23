@@ -36,6 +36,12 @@ const RegisterUser = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
+    res.cookie(`user_2225`, token, {
+      maxAge: 86400000, // 1 day in milliseconds
+      httpOnly: true, // Prevent JavaScript access
+      secure: true, // Only send over HTTPS
+      sameSite: "Lax", // CSRF protection
+    });
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -70,6 +76,13 @@ const LoginUser = async (req, res, next) => {
     // Generate JWT token
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "7d",
+    });
+
+    res.cookie(`user_2225`, token, {
+      maxAge: 86400000, // 1 day in milliseconds
+      httpOnly: true, // Prevent JavaScript access
+      secure: true, // Only send over HTTPS
+      sameSite: "Lax", // CSRF protection
     });
 
     return res.status(200).json({
@@ -127,9 +140,36 @@ const TokenVerification = (req, res) => {
   }
 };
 
+const getProfileInfo = async (req, res, next) => {
+  try {
+    const userId = req.user?.id; // Extract user ID from the request
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized: No user found" });
+    }
+
+    // Fetch user profile from MongoDB using Prisma
+    const user = await User.findOne({ id: userId })
+      .select("-password -createdBy -_id -id -__v -createdAt -updatedAt")
+      .lean();
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "Profile Found", data: user }); // Send user data as response
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    next(error);
+  }
+};
+
 module.exports = {
   RegisterUser,
   LoginUser,
   AuthByProviders,
   TokenVerification,
+  getProfileInfo,
 };

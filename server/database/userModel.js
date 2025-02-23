@@ -24,6 +24,8 @@ const UserSchema = new Schema(
     },
     image: {
       type: String, // Added image field
+      required: true,
+      default: "https://picsum.photos/500/500",
     },
     createdBy: {
       type: String,
