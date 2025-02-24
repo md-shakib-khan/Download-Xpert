@@ -15,7 +15,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
-import Cookies from "js-cookie";
 import { FacebookButton } from "./FacebookButton";
 import { GitHubButton } from "./GitHubButton";
 import { GoogleButton } from "./GoogleButton";
@@ -60,7 +59,8 @@ export function AuthenticationForm(props: PaperProps) {
             name: values.name,
             email: values.email,
             password: values.password,
-          }
+          },
+          { withCredentials: true }
         );
         // Handle registration response (e.g., redirect, show message)
         console.log("Registered successfully", response.data);
@@ -79,6 +79,9 @@ export function AuthenticationForm(props: PaperProps) {
           {
             email: values.email,
             password: values.password,
+          },
+          {
+            withCredentials: true,
           }
         );
         // Handle login response (e.g., store token, redirect, show message)
