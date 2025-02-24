@@ -1,9 +1,7 @@
 const jwt = require("jsonwebtoken"); // Importing jwt for token generation
 const bcrypt = require("bcryptjs"); // Import bcrypt to hash the password
-const User = require("../database/userModel"); // Import User model
-
-// Secret key for JWT signing (store securely in .env)
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const User = require("../database/userModel");
+const { v4: uuidv4 } = require("uuid"); // Import User model
 
 // Register a new user
 const RegisterUser = async (req, res, next) => {
@@ -24,6 +22,7 @@ const RegisterUser = async (req, res, next) => {
       email,
       password, // Password will be hashed automatically via pre-save hook
       createdBy: "manual", // As the registration is manual
+      providerEmail: uuidv4,
     });
 
     // Save user to the database
@@ -32,15 +31,15 @@ const RegisterUser = async (req, res, next) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email },
-      JWT_SECRET,
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "7d" }
     );
 
-    res.cookie(`user_2225`, token, {
+    res.cookie("user_2225", token, {
       maxAge: 86400000, // 1 day in milliseconds
       httpOnly: true, // Prevent JavaScript access
-      secure: true, // Only send over HTTPS
-      sameSite: "Lax", // CSRF protection
+      secure: process.env.NODE_ENV === "production",
+      // sameSite: "Lax", // CSRF protection
     });
     return res.status(201).json({
       success: true,
@@ -58,7 +57,7 @@ const LoginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     // Find user by email
-    const user = await User.findOne({ email, createdBy: "manual" });
+    const user = await User.findOne({ email, provider: "manual" });
     if (!user) {
       return res
         .status(400)
@@ -74,54 +73,24 @@ const LoginUser = async (req, res, next) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "7d",
+      }
+    );
 
-    res.cookie(`user_2225`, token, {
+    res.cookie("user_2225", token, {
       maxAge: 86400000, // 1 day in milliseconds
       httpOnly: true, // Prevent JavaScript access
-      secure: true, // Only send over HTTPS
-      sameSite: "Lax", // CSRF protection
+      secure: process.env.NODE_ENV === "production",
+      // sameSite: "Lax", // CSRF protection
     });
 
     return res.status(200).json({
       success: true,
       message: "User logged in successfully",
-      token,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// Authenticate user via external providers (e.g., Google, Facebook)
-const AuthByProviders = async (req, res, next) => {
-  try {
-    const { name, email, image, provider } = req.body;
-
-    // Check if the user already exists (based on email)
-    let user = await User.findOne({ email, createdBy: provider });
-    if (!user) {
-      // If no user, create a new user with the provider's data
-      user = new User({
-        name,
-        email,
-        image,
-        createdBy: provider, // Set the provider as the source of registration
-      });
-
-      await user.save();
-    }
-
-    // Generate JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "User authenticated successfully",
       token,
     });
   } catch (error) {
@@ -150,7 +119,7 @@ const getProfileInfo = async (req, res, next) => {
 
     // Fetch user profile from MongoDB using Prisma
     const user = await User.findOne({ id: userId })
-      .select("-password -createdBy -_id -id -__v -createdAt -updatedAt")
+      .select("-password -_id -id -__v -createdAt -updatedAt")
       .lean();
 
     if (!user) {
@@ -169,7 +138,6 @@ const getProfileInfo = async (req, res, next) => {
 module.exports = {
   RegisterUser,
   LoginUser,
-  AuthByProviders,
   TokenVerification,
   getProfileInfo,
 };

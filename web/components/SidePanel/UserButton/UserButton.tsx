@@ -18,7 +18,9 @@ export function UserButton() {
           </Text>
 
           <Text c="dimmed" size="xs">
-            {userProfile.email}
+            {userProfile.provider !== "manual"
+              ? userProfile.providerEmail
+              : userProfile.email}
           </Text>
         </div>
 

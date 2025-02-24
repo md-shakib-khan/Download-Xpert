@@ -16,7 +16,8 @@ const UserSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
+      default: "",
+      unique: true,
     },
     password: {
       type: String,
@@ -27,11 +28,15 @@ const UserSchema = new Schema(
       required: true,
       default: "https://picsum.photos/500/500",
     },
-    createdBy: {
+    provider: {
       type: String,
       enum: ["google", "manual", "github", "tiktok", "instagram"],
       default: "manual",
       required: true,
+    },
+    providerEmail: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

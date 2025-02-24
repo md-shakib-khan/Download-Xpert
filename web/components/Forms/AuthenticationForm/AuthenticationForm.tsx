@@ -65,7 +65,7 @@ export function AuthenticationForm(props: PaperProps) {
         // Handle registration response (e.g., redirect, show message)
         console.log("Registered successfully", response.data);
         if (response.data.success) {
-          Cookies.set("user_2225", response.data.token);
+          // Cookies.set("user_2225", response.data.token);
           window.location.href = "/";
         }
       } else {
@@ -85,7 +85,7 @@ export function AuthenticationForm(props: PaperProps) {
         console.log("Logged in successfully", response.data);
 
         if (response.data.success) {
-          Cookies.set("user_2225", response.data.token);
+          // Cookies.set("user_2225", response.data.token);
           window.location.href = "/";
         }
       }
@@ -97,6 +97,14 @@ export function AuthenticationForm(props: PaperProps) {
     form.reset();
   };
 
+  const googleLogin = () => {
+    // Implement Google login logic here
+    window.location.href =
+      process.env.NODE_ENV === "development"
+        ? `${process.env.NEXT_PUBLIC_WEB_SERVER_URL_DEV}/auth/google`
+        : `${process.env.NEXT_PUBLIC_WEB_SERVER_URL_PRO}/auth/google` || "/";
+  };
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" fw={500}>
@@ -104,7 +112,7 @@ export function AuthenticationForm(props: PaperProps) {
       </Text>
 
       <SimpleGrid cols={2} mb="md" mt="md">
-        <GoogleButton radius="xl" onClick={() => {}}>
+        <GoogleButton radius="xl" onClick={googleLogin}>
           Google
         </GoogleButton>
         <GitHubButton radius="xl" onClick={() => {}}>

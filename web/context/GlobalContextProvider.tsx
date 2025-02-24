@@ -33,12 +33,15 @@ export const GlobalContextProvider: React.FC<GlobalProviderProps> = ({
     name: "",
     email: "",
     image: "",
+    provider: "",
+    providerEmail: "",
   });
   const sayHello: GlobalContextProps["sayHello"] = React.useCallback(() => {
     console.log("Context API Working ?");
   }, []);
 
   const getProfileInfo = async () => {
+    if (!token) return;
     const { data } = await axios.get(
       `${
         process.env.NODE_ENV === "development"
@@ -51,6 +54,7 @@ export const GlobalContextProvider: React.FC<GlobalProviderProps> = ({
         },
       }
     );
+    console.log(data.data);
 
     setUserProfile(data.data);
   };
@@ -58,8 +62,17 @@ export const GlobalContextProvider: React.FC<GlobalProviderProps> = ({
   useEffect(() => {
     const userToken = Cookies.get("user_2225") as string; // Get token from cookies
     setToken(userToken);
-    getProfileInfo();
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      alert("Token Found");
+      getProfileInfo(); // Fetch profile info if the token is available
+    }
   }, [token]);
+
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
   return (
     <GlobalContext.Provider
