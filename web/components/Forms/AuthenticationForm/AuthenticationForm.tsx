@@ -15,15 +15,15 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import { FacebookButton } from "./FacebookButton";
 import { GitHubButton } from "./GitHubButton";
 import { GoogleButton } from "./GoogleButton";
 import { InstagramButton } from "./InstagramButton";
 import { TiktokButton } from "./TiktokButton";
 import { XButton } from "./XButton";
-
-import axios from "axios";
-import { useRouter } from "next/navigation";
 
 export function AuthenticationForm(props: PaperProps) {
   const router = useRouter();
