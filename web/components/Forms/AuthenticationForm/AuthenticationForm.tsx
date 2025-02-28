@@ -65,7 +65,7 @@ export function AuthenticationForm(props: PaperProps) {
         // Handle registration response (e.g., redirect, show message)
         console.log("Registered successfully", response.data);
         if (response.data.success) {
-          // Cookies.set("user_2225", response.data.token);
+          Cookies.set("user_2225", response.data.token);
           window.location.href = "/";
         }
       } else {
@@ -88,7 +88,7 @@ export function AuthenticationForm(props: PaperProps) {
         console.log("Logged in successfully", response.data);
 
         if (response.data.success) {
-          // Cookies.set("user_2225", response.data.token);
+          Cookies.set("user_2225", response.data.token);
           window.location.href = "/";
         }
       }
