@@ -35,12 +35,12 @@ const RegisterUser = async (req, res, next) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("user_2225", token, {
-      maxAge: 86400000, // 1 day in milliseconds
-      httpOnly: true, // Prevent JavaScript access
-      secure: process.env.NODE_ENV === "production",
-      // sameSite: "Lax", // CSRF protection
-    });
+    // res.cookie("user_2225", token, {
+    //   maxAge: 86400000, // 1 day in milliseconds
+    //   httpOnly: true, // Prevent JavaScript access
+    //   secure: process.env.NODE_ENV === "production",
+    //   // sameSite: "Lax", // CSRF protection
+    // });
     return res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -81,12 +81,12 @@ const LoginUser = async (req, res, next) => {
       }
     );
 
-    res.cookie("user_2225", token, {
-      maxAge: 86400000, // 1 day in milliseconds
-      httpOnly: true, // Prevent JavaScript access
-      secure: process.env.NODE_ENV === "production",
-      // sameSite: "Lax", // CSRF protection
-    });
+    // res.cookie("user_2225", token, {
+    //   maxAge: 86400000, // 1 day in milliseconds
+    //   httpOnly: true, // Prevent JavaScript access
+    //   secure: process.env.NODE_ENV === "production",
+    //   // sameSite: "Lax", // CSRF protection
+    // });
 
     return res.status(200).json({
       success: true,
